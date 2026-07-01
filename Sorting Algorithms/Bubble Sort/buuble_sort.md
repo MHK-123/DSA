@@ -8,17 +8,32 @@ After every pass (iteration), the **largest unsorted element moves to the end of
 
 ---
 
+## Input Format
+
+The first line contains an integer **n**, representing the number of elements in the array.
+
+The second line contains **n** space-separated integers.
+
+### Example Input
+
+```text
+5
+5 1 3 4 2
+```
+
+---
+
 ## Example
 
-Given an array:
+Initial Array:
 
-```python
-arr = [5, 1, 3, 4, 2]
+```text
+[5, 1, 3, 4, 2]
 ```
 
 ### Pass 1
 
-```
+```text
 [5, 1, 3, 4, 2]
  ↓
 5 > 1 → Swap
@@ -40,16 +55,19 @@ arr = [5, 1, 3, 4, 2]
 
 Notice that **5**, the largest element, has reached the last position.
 
-The next pass places **4** in its correct position, then **3**, and so on until the array is completely sorted.
+The next pass places **4** in its correct position, then **3**, and finally **2**, resulting in a fully sorted array.
 
 ---
 
 ## Algorithm
 
-1. Compare two adjacent elements.
-2. If the left element is greater than the right element, swap them.
-3. Continue comparing until you reach the end of the array.
-4. Repeat the process until the array is sorted.
+1. Read the number of elements (`n`).
+2. Read the array containing `n` integers.
+3. Compare two adjacent elements.
+4. If the left element is greater than the right element, swap them.
+5. Continue comparing until reaching the end of the unsorted portion.
+6. Repeat the process until the array is sorted.
+7. Print the sorted array.
 
 ---
 
@@ -57,47 +75,182 @@ The next pass places **4** in its correct position, then **3**, and so on until 
 
 ```python
 def bubble_sort(arr):
-    n = len(arr)                      # Number of elements
+    n = len(arr)
 
-    for i in range(n - 1):            # Repeat the process (n - 1) times
-        for j in range(n - i - 1):    # Compare adjacent elements
-            if arr[j] > arr[j + 1]:   # If left > right
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]  # Swap
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
 
 
-arr = [5, 1, 3, 4, 2]
+# Read the number of elements
+n = int(input())
 
-print(arr)
+# Read the array
+arr = list(map(int, input().split()))
 
 bubble_sort(arr)
 
-print(arr)
+# Print the sorted array
+print(*arr)
 ```
+
+---
+
+## Sample Input
+
+```text
+5
+5 1 3 4 2
+```
+
+## Sample Output
+
+```text
+1 2 3 4 5
+```
+
+---
+
+## Understanding the Input
+
+### Reading the Size of the Array
+
+```python
+n = int(input())
+```
+
+Suppose the user enters:
+
+```text
+5
+```
+
+Then:
+
+```python
+n = 5
+```
+
+This tells the program that the array contains **5 elements**.
+
+---
+
+### Reading the Array
+
+```python
+arr = list(map(int, input().split()))
+```
+
+Suppose the next input line is:
+
+```text
+5 1 3 4 2
+```
+
+Let's break it down step by step.
+
+#### Step 1
+
+```python
+input()
+```
+
+Reads the entire line as a string.
+
+```text
+"5 1 3 4 2"
+```
+
+---
+
+#### Step 2
+
+```python
+.split()
+```
+
+Splits the string wherever there is a space.
+
+```python
+['5', '1', '3', '4', '2']
+```
+
+Notice that these are **strings**, not numbers.
+
+---
+
+#### Step 3
+
+```python
+map(int, ...)
+```
+
+Converts each string into an integer.
+
+```python
+5
+1
+3
+4
+2
+```
+
+---
+
+#### Step 4
+
+```python
+list(...)
+```
+
+Stores all those integers inside a list.
+
+```python
+[5, 1, 3, 4, 2]
+```
+
+So,
+
+```python
+arr = list(map(int, input().split()))
+```
+
+is equivalent to writing:
+
+```python
+arr = [5, 1, 3, 4, 2]
+```
+
+except that the values come from the user instead of being hardcoded in the program.
 
 ---
 
 ## Time Complexity
 
-* **Best Case:** O(n²) *(for this basic implementation)*
-* **Average Case:** O(n²)
-* **Worst Case:** O(n²)
+| Case | Complexity |
+|------|------------|
+| Best Case (Basic Implementation) | **O(n²)** |
+| Average Case | **O(n²)** |
+| Worst Case | **O(n²)** |
 
 ### Why?
 
 Bubble Sort uses **two nested loops**.
 
-* The outer loop runs approximately **n** times.
-* The inner loop also runs approximately **n** times.
+- The outer loop runs **(n − 1)** times.
+- During each pass, the inner loop compares adjacent elements.
 
-So the total number of comparisons is roughly:
+The total number of comparisons is:
 
+```text
+(n - 1) + (n - 2) + ... + 2 + 1
+= n(n - 1) / 2
 ```
-n × n = n²
-```
 
-Therefore, the time complexity is:
+Ignoring constants and lower-order terms in Big-O notation:
 
-```
+```text
 O(n²)
 ```
 
@@ -105,20 +258,25 @@ O(n²)
 
 ## Space Complexity
 
-```
+```text
 O(1)
 ```
 
 ### Why?
 
-Bubble Sort sorts the array **in place**. It only uses a few extra variables (`i`, `j`, and `n`) and does not create another array.
+Bubble Sort sorts the array **in place**, meaning it modifies the original array instead of creating a new one.
+
+It only uses a few extra variables (`n`, `i`, and `j`), so the extra memory required remains constant.
 
 ---
 
 ## Key Points
 
-* Compares adjacent elements.
-* Swaps only when the left element is greater than the right element.
-* After each pass, the largest unsorted element reaches the end.
-* Simple to understand and implement.
-* Not efficient for large datasets because it has O(n²) time complexity.
+- Reads the array from user input.
+- Compares adjacent elements.
+- Swaps only when the left element is greater than the right element.
+- After every pass, the largest unsorted element moves to the end.
+- Sorts the array in place.
+- Uses constant extra memory **O(1)**.
+- Simple to understand and implement.
+- Not suitable for large datasets because its time complexity is **O(n²)**.
